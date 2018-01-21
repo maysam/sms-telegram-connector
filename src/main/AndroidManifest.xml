@@ -5,19 +5,10 @@
     android:versionName="1.0" >
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.READ_SMS" />
-    <uses-permission android:name="android.permission.WRITE_SMS" />
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
-
-    <permission
-        android:name="com.anjlab.android.smsgateway.gcm.permission.C2D_MESSAGE"
-        android:protectionLevel="signature" />
-    <uses-permission android:name="com.anjlab.android.smsgateway.gcm.permission.C2D_MESSAGE" />
-    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
-
+<uses-permission android:name="android.permission.READ_CONTACTS" />
     <application
         android:icon="@drawable/ic_launcher"
         android:allowBackup="true"
@@ -36,22 +27,15 @@
 
         <receiver
             android:name=".SmsBroadcastReceiver"
-            android:permission="com.google.android.c2dm.permission.SEND" >
+            android:permission="android.permission.RECEIVE_SMS"
+            >
+
             <intent-filter>
-                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
 
-                <category android:name="com.anjlab.android.smsgateway.gcm" />
-            </intent-filter>
-        </receiver>
-
-        <receiver android:name=".SmsMessageReceiver">
-            <intent-filter android:priority="2147483647">
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>
         </receiver>
 
-        <service android:name=".SmsIntentService" />
-        <service android:name=".HttpHookIntentService" />
     </application>
 
 </manifest>
