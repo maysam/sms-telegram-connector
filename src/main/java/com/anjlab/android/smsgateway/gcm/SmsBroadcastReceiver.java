@@ -14,6 +14,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Arrays;
+import java.util.Objects;
 
 import static android.provider.Telephony.Sms.Intents.getMessagesFromIntent;
 
@@ -22,42 +23,46 @@ public class SmsBroadcastReceiver extends BroadcastReceiver {
   @Override
   public void onReceive(Context context, Intent intent) {
             /* Get Messages */
-    SmsMessage[] sms = getMessagesFromIntent(intent);
-    assert sms != null;
+    if (intent.getAction().equals("android.provider.Telephony.SMS_RECEIVED")) {
+
+      SmsMessage[] sms = getMessagesFromIntent(intent);
+      assert sms != null;
 
 
-    String urlStringFormat = "https://api.telegram.org/bot%s/sendMessage?chat_id=%s&text=%s";
-    String apiToken = "488699109:AAEKYpTzU6VNumJIAY_L9yEQZpZND7Da688";
-    String chatId = "59755972";
-    String sender = null;
-    StringBuilder msg = null;
-    String last_phone = null;
+      String urlStringFormat = "https://api.telegram.org/bot%s/sendMessage?chat_id=%s&text=%s";
+      String apiToken = "488699109:AAEKYpTzU6VNumJIAY_L9yEQZpZND7Da688";
+      String chatId = "59755972";
+      String sender = null;
+      StringBuilder msg = null;
+      String last_phone = null;
 
-    String urlString = null;
-    for (SmsMessage smsMessage : sms) {
+      String urlString = null;
+      for (SmsMessage smsMessage : sms) {
                 /* Parse Each Message */
-      String phone = smsMessage.getOriginatingAddress();
-      String message = smsMessage.getDisplayMessageBody();
-      if (last_phone == null || !last_phone.contentEquals(phone)) {
-        if (last_phone != null && !last_phone.contentEquals(phone)) sendMessageToTelegram(urlString);
-        last_phone = phone;
-        msg = new StringBuilder(message);
-        Uri personUri = Uri.withAppendedPath( ContactsContract.PhoneLookup.CONTENT_FILTER_URI, phone);
-        Cursor cur = context.getContentResolver().query(personUri, new String[] { ContactsContract.PhoneLookup.DISPLAY_NAME }, null, null, null );
-        if( cur != null && cur.moveToFirst() ) {
-          int nameIndex = cur.getColumnIndex(ContactsContract.PhoneLookup.DISPLAY_NAME);
-          sender = cur.getString(nameIndex);
-          cur.close();
+        String phone = smsMessage.getOriginatingAddress();
+        String message = smsMessage.getDisplayMessageBody();
+        if (last_phone == null || !last_phone.contentEquals(phone)) {
+          if (last_phone != null && !last_phone.contentEquals(phone))
+            sendMessageToTelegram(urlString);
+          last_phone = phone;
+          msg = new StringBuilder(message);
+          Uri personUri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, phone);
+          Cursor cur = context.getContentResolver().query(personUri, new String[]{ContactsContract.PhoneLookup.DISPLAY_NAME}, null, null, null);
+          if (cur != null && cur.moveToFirst()) {
+            int nameIndex = cur.getColumnIndex(ContactsContract.PhoneLookup.DISPLAY_NAME);
+            sender = cur.getString(nameIndex);
+            cur.close();
+          } else {
+            sender = phone;
+          }
         } else {
-          sender = phone;
+          msg.append(message);
         }
-      } else {
-        msg.append(message);
-      }
-      String text = sender + ":\n" + msg;
-      urlString = String.format(urlStringFormat, apiToken, chatId, text.replace("\n", "%0A"));
-    } // for
-    sendMessageToTelegram(urlString);
+        String text = sender + ":\n" + msg;
+        urlString = String.format(urlStringFormat, apiToken, chatId, text.replace("\n", "%0A"));
+      } // for
+      sendMessageToTelegram(urlString);
+    }
   }
 
   private void sendMessageToTelegram(final String urlString) {
