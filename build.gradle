@@ -1,6 +1,8 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
 
 buildscript {
+    ext.kotlin_version = '1.2.21'
     repositories {
         jcenter()
 
@@ -8,6 +10,7 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:2.3.3'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
 
@@ -20,6 +23,7 @@ dependencies {
     compile 'com.android.support:support-v4:25.3.1'
     compile 'com.jakewharton:butterknife:8.8.1'
       annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
 
 android {
@@ -28,7 +32,7 @@ android {
 
     defaultConfig {
         minSdkVersion 9
-        targetSdkVersion 25
+        targetSdkVersion 26
     }
 
     compileOptions {
