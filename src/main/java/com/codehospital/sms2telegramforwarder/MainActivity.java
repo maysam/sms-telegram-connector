@@ -1,4 +1,4 @@
-package com.anjlab.android.smsgateway.gcm;
+package com.codehospital.sms2telegramforwarder;
 
 import android.app.Activity;
 import android.content.pm.PackageManager;

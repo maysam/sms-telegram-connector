@@ -1,4 +1,4 @@
-package com.anjlab.android.smsgateway.gcm;
+package com.codehospital.sms2telegramforwarder;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -14,7 +14,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Arrays;
-import java.util.Objects;
 
 import static android.provider.Telephony.Sms.Intents.getMessagesFromIntent;
 
