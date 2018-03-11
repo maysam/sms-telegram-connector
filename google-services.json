@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "506646203593",
+    "firebase_url": "https://android-sms-gateway-bb2bc.firebaseio.com",
+    "project_id": "android-sms-gateway-bb2bc",
+    "storage_bucket": "android-sms-gateway-bb2bc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:506646203593:android:dbfe70f664c0bd70",
+        "android_client_info": {
+          "package_name": "com.codehospital.sms2telegramforwarder"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "506646203593-v9k4p3nhlbiravlhukb10ejjugaupia1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.codehospital.sms2telegramforwarder",
+            "certificate_hash": "75dce84915c21aa6cd2420886579f64a878e50d6"
+          }
+        },
+        {
+          "client_id": "506646203593-aqbr5423na81u1e1201c4djmlne185gu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCnEjV5T3VLNv-DlD3_XDLwu6FkBOoXM5I"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "506646203593-aqbr5423na81u1e1201c4djmlne185gu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

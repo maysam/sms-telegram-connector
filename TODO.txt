@@ -1,0 +1,8 @@
++ convert to kotlin
+- call a number from telegram
+- use boxdb to keep sms received when offline and send when online using services
+d restart when phone restarts
+- use user supplied telegram id
+- get user telegram id automatically
+- replying a sms on telegram, should send a reply to actual sms
+- control phone from telegram
