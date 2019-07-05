@@ -2,43 +2,25 @@ package com.codehospital.sms2telegramforwarder
 
 import android.Manifest
 import android.Manifest.permission.*
-import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
-import android.support.v4.app.ActivityCompat
+import android.preference.PreferenceManager
 import android.util.Log
 import android.view.WindowManager
-import android.widget.Button
-import android.widget.EditText
-import kotlinx.android.synthetic.main.main.*/// HERE "YOUR_LAYOUT_NAME" IS YOUR LAYOUT NAME WHICH U HAVE INFLATED IN onCreate()/onCreateView()
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.preference.PreferenceFragmentCompat
 import com.newrelic.agent.android.NewRelic
-import android.arch.persistence.db.SupportSQLiteDatabase
-import android.arch.persistence.room.migration.Migration
-import android.arch.persistence.room.Room
 
+class MainActivity : AppCompatActivity() {
+    private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var database: AppDatabase
 
-
-
-
-
-class MainActivity : Activity() {
-//    @BindView(R.id.senderIdInputView)
-//    internal var senderId: EditText? = null
-//
-//    @BindView(R.id.forwardingUrlInputView)
-//    internal var forwardingUrl: EditText? = null
-//
-//    @BindView(R.id.forwardingEnabled)
-//    internal var forwardingEnabled: CheckBox? = null
-//
-//    @BindView(R.id.senderIdPanel)
-//    internal var senderIdPanel: View? = null
-
-
-    public final fun callSomeone(number: String) {
+    private fun callSomeone(number: String) {
         val callIntent = Intent(Intent.ACTION_CALL);
         callIntent.setData(Uri.parse("tel:" + number));
         if (ActivityCompat.checkSelfPermission(this,
@@ -54,7 +36,7 @@ class MainActivity : Activity() {
         if (callIntent.resolveActivity(getPackageManager()) != null)
             startActivity(callIntent)
     }
-    var database: AppDatabase? = null;
+
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         NewRelic.withApplicationToken(
@@ -65,22 +47,15 @@ class MainActivity : Activity() {
         ActivityCompat.requestPermissions(this,
                 arrayOf(RECEIVE_SMS, READ_CONTACTS, CALL_PHONE),
                 MY_PERMISSIONS_REQUEST_READ_SMS)
-        //        int permissionCheck = ContextCompat.checkSelfPermission(this, RECEIVE_SMS);
-        val numberBox : EditText = findViewById(R.id.senderIdInputView) as EditText
-        val saveProject: Button = findViewById(R.id.saveProjectId) as Button
-        saveProject.setOnClickListener { callSomeone(numberBox.getText().toString()) }
-        database = Room.databaseBuilder(getApplicationContext(),
-                AppDatabase::class.java!!, "sms-database-name").build()
+        val permissionCheck = ContextCompat.checkSelfPermission(this, RECEIVE_SMS)
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+        database = AppDatabase.getInstance(this)!!
 
-//        Room.databaseBuilder(getApplicationContext(), MyDb::class.java!!, "database-name")
-//                .addMigrations(MIGRATION_1_2, MIGRATION_2_3).build()
-//
-//        val MIGRATION_1_2 = object : Migration(1, 2) {
-//            override fun migrate(database: SupportSQLiteDatabase) {
-//                database.execSQL("CREATE TABLE `Fruit` (`id` INTEGER, " + "`name` TEXT, PRIMARY KEY(`id`))")
-//            }
-//        }
-
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.settings, SettingsFragment())
+            .commit()
+        supportActionBar?.setDisplayHomeAsUpEnabled(false)
 
     }
 //
@@ -108,9 +83,29 @@ class MainActivity : Activity() {
         // permissions this app might request.
     }
 
+    class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedPreferenceChangeListener {
+        override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
+            Log.i(TAG, "$key changed")
+        }
+
+        override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+            setPreferencesFromResource(R.xml.root_preferences, rootKey)
+        }
+
+        override fun onResume() {
+            super.onResume()
+            preferenceManager.sharedPreferences.registerOnSharedPreferenceChangeListener(this)
+        }
+
+        override fun onPause() {
+            super.onPause()
+            preferenceManager.sharedPreferences.unregisterOnSharedPreferenceChangeListener(this)
+        }
+    }
+
     companion object {
         private const val MY_PERMISSIONS_REQUEST_READ_SMS = 314
-
+        val TAG = "SMS-Forwarder"
 //        val database: AppDatabase = AppDatabase.getDatabase(getApplicationContext());
     }
 }

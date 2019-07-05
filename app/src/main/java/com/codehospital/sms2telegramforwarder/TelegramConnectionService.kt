@@ -1,12 +1,14 @@
 package com.codehospital.sms2telegramforwarder
 
 import android.app.IntentService
-import android.content.Intent
 import android.content.Context
-import java.net.*
-import java.io.*
-import java.util.*
+import android.content.Intent
 import android.util.Log
+import java.io.IOException
+import java.io.InputStreamReader
+import java.net.MalformedURLException
+import java.net.URL
+import java.util.*
 
 /**
  * An [IntentService] subclass for handling asynchronous task requests in

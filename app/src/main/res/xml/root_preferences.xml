@@ -1,0 +1,18 @@
+<androidx.preference.PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory app:title="@string/telegram_information">
+
+        <EditTextPreference
+                app:key="telegram_id"
+                app:title="@string/telegram_id"
+                app:useSimpleSummaryProvider="true"/>
+
+        <EditTextPreference
+                app:key="telegram_token"
+                app:title="@string/telegram_token"
+                app:useSimpleSummaryProvider="true"/>
+
+
+    </PreferenceCategory>
+
+</androidx.preference.PreferenceScreen>

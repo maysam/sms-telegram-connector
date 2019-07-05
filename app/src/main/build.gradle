@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
-apply plugin: 'kotlin-kapt'
+//apply plugin: 'kotlin-kapt'
 
 
 android {
@@ -23,6 +23,9 @@ android {
 
     }
 
+    dataBinding {
+        enabled = true
+    }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -33,7 +36,9 @@ android {
 kapt {
     //correctErrorTypes = true
 }
-
+kapt {
+    generateStubs = true
+}
 dependencies {
     implementation 'com.newrelic.agent.android:android-agent:5.14.0'
     // ViewModel and LiveData
