@@ -5,5 +5,8 @@
     <string name="telegram_information">Telegram Secrets</string>
     <string name="telegram_token">Telegram Bot Token</string>
     <string name="telegram_id">Telegram User Id</string>
+    <string name="proxy_port">Port</string>
+    <string name="proxy_ip">IP</string>
+    <string name="telegram_proxy">Telegram Proxy</string>
 
 </resources>

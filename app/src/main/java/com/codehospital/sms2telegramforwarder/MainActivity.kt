@@ -14,7 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.preference.PreferenceFragmentCompat
-import com.newrelic.agent.android.NewRelic
+//import com.newrelic.agent.android.NewRelic
 
 class MainActivity : AppCompatActivity() {
     private lateinit var sharedPreferences: SharedPreferences
@@ -39,9 +39,9 @@ class MainActivity : AppCompatActivity() {
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        NewRelic.withApplicationToken(
-                "AA7a32db908d1b307f210c65b450beb060895dbd1a"
-        ).start(this.getApplication());
+//        NewRelic.withApplicationToken(withApplicationToken
+//                "AA7a32db908d1b307f210c65b450beb060895dbd1a"
+//        ).start(this.getApplication());
         setContentView(R.layout.main)
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         ActivityCompat.requestPermissions(this,
