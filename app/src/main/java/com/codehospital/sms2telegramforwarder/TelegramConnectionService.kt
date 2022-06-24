@@ -29,22 +29,22 @@ class TelegramConnectionService : IntentService("TelegramConnectionService") {
                     try {
                         val url = URL(urlString)
                         val conn = url.openConnection()
-                        val sb = StringBuilder();
-                        val bis =  java.io.BufferedInputStream(conn.getInputStream());
-                        val br = java.io.BufferedReader(InputStreamReader(bis));
-                        var inputLine = br.readLine();
+                        val sb = StringBuilder()
+                        val bis =  java.io.BufferedInputStream(conn.getInputStream())
+                        val br = java.io.BufferedReader(InputStreamReader(bis))
+                        var inputLine = br.readLine()
                         while (inputLine != null) {
-                          sb.append(inputLine);
-                            inputLine=br.readLine();
+                          sb.append(inputLine)
+                            inputLine=br.readLine()
                         }
-                        val response = sb.toString();
+                        val response = sb.toString()
                         // Do what you want with response
                     } catch (e: MalformedURLException) {
-                        Log.e("SmsBroadcastReceiver", e.message)
+                        Log.e("SmsBroadcastReceiver", e.message!!)
                         Log.e("SmsBroadcastReceiver", Arrays.toString(e.stackTrace))
                         e.printStackTrace()
                     } catch (e: IOException) {
-                        Log.e("SmsBroadcastReceiver", e.message)
+                        Log.e("SmsBroadcastReceiver", e.message!!)
                         Log.e("SmsBroadcastReceiver", Arrays.toString(e.stackTrace))
                         e.printStackTrace()
                     }
@@ -77,12 +77,12 @@ class TelegramConnectionService : IntentService("TelegramConnectionService") {
 //                    ]
 //                }
 //                https@ //api.telegram.org/bot488699109:AAEKYpTzU6VNumJIAY_L9yEQZpZND7Da688/getUpdates
-                val param1 = intent.getStringExtra(EXTRA_PARAM1)
-                val param2 = intent.getStringExtra(EXTRA_PARAM2)
+                val param1 = intent.getStringExtra(EXTRA_PARAM1)!!
+                val param2 = intent.getStringExtra(EXTRA_PARAM2)!!
                 handleActionFoo(param1, param2)
             } else if (ACTION_BAZ == action) {
-                val param1 = intent.getStringExtra(EXTRA_PARAM1)
-                val param2 = intent.getStringExtra(EXTRA_PARAM2)
+                val param1 = intent.getStringExtra(EXTRA_PARAM1)!!
+                val param2 = intent.getStringExtra(EXTRA_PARAM2)!!
                 handleActionBaz(param1, param2)
             }
         }
